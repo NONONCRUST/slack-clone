@@ -1,7 +1,7 @@
 import axios from ".";
-import { ChannelAPIBody } from "../../types/channel";
+import { ChannelAPIBodyType } from "../../types/channel";
 
-export const addChannelAPI = (body: ChannelAPIBody) =>
+export const addChannelAPI = (body: ChannelAPIBodyType) =>
   axios.post("/api/channel", body);
 
 export const getChannelsAPI = () => axios.get("/api/channel");

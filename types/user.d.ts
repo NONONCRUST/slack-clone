@@ -1,4 +1,4 @@
-export type SignUpBodyType = {
+export type SignUpAPIBodyType = {
   name: string;
   email: string;
   password: string;

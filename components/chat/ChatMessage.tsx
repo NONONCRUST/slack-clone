@@ -6,10 +6,20 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import Image from "next/image";
-import { textAlign } from "@mui/system";
+import { ChatDataType } from "../../types/chat";
+import { useSelector } from "../../store";
 
-const ChatMessage: React.FC = () => {
+interface Props {
+  message: ChatDataType;
+}
+
+const ChatMessage: React.FC<Props> = ({ message }) => {
+  const currentUser = useSelector((state) => state.user);
+  console.log(currentUser);
+  console.log(message);
+
+  const { username, timestamp } = message;
+
   return (
     <ListItem>
       <ListItemAvatar sx={{ alignSelf: "stretch" }}>
@@ -19,16 +29,19 @@ const ChatMessage: React.FC = () => {
         <Grid item xs={12} sx={{ display: "flex", justifyContent: "left" }}>
           <ListItemText
             sx={{ display: "flex" }}
-            primary={"닉네임"}
-            primaryTypographyProps={{ fontWeight: "bold", color: "orange" }}
-            secondary={"2022.01.01"}
+            primary={username}
+            primaryTypographyProps={{
+              fontWeight: "bold",
+              color: message.email === currentUser?.email ? "orange" : "black",
+            }}
+            secondary={timestamp}
             secondaryTypographyProps={{ color: "gray", ml: 1 }}
           />
         </Grid>
         <Grid item xs={12}>
           <ListItemText
             sx={{ wordBreak: "break-all" }}
-            primary={"채팅메시지입니다."}
+            primary={message.message}
           />
         </Grid>
       </Grid>

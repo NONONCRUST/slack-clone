@@ -36,7 +36,7 @@ const ChannelMenu: React.FC = () => {
 
   const closeModal = useCallback(() => setModalOpen(false), []);
 
-  const getChannelData = useCallback(async () => {
+  const fetchChannelData = useCallback(async () => {
     const res = await getChannelsAPI();
     setChannelList(res.data);
   }, []);
@@ -59,11 +59,11 @@ const ChannelMenu: React.FC = () => {
     try {
       addChannelAPI(body);
       setModalOpen(false);
-      getChannelData();
+      fetchChannelData();
     } catch (error) {
       console.log(error);
     }
-  }, [channelDetail, channelName, getChannelData]);
+  }, [channelDetail, channelName, fetchChannelData]);
 
   const changeChannel = useCallback(
     (channel: ChannelDataType) => {
@@ -75,13 +75,13 @@ const ChannelMenu: React.FC = () => {
   );
 
   useEffect(() => {
-    if (initialLoad) getChannelData();
+    if (initialLoad) fetchChannelData();
 
     if (channelList.length > 0 && initialLoad) {
       dispatch(channelActions.setCurrentChannel(channelList[0]));
       setInitialLoad(false);
     }
-  }, [channelList, initialLoad, dispatch, getChannelData]);
+  }, [channelList, initialLoad, dispatch, fetchChannelData]);
 
   return (
     <>

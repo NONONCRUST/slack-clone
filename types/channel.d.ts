@@ -1,4 +1,4 @@
-export type ChannelAPIBody = {
+export type ChannelAPIBodyType = {
   id: string;
   name: string;
   detail: string;
