@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Divider, Grid, List, Paper, Toolbar } from "@mui/material";
 import ChatHeader from "./ChatHeader";
 import { useSelector } from "../../store";
@@ -11,7 +11,8 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<ChatDataType[]>([]);
 
   const currentChannel = useSelector((state) => state.channel.currentChannel);
-  const currentUser = useSelector((state) => state.user);
+
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
 
   const fetchMessages = useCallback(async () => {
     const res = await getChatsAPI();
@@ -22,10 +23,16 @@ const Chat: React.FC = () => {
   }, [currentChannel]);
 
   useEffect(() => {
-    if (!currentChannel || !currentUser) return;
+    if (!currentChannel) return;
 
     fetchMessages();
-  }, [currentChannel, currentUser, fetchMessages]);
+  }, [currentChannel, fetchMessages]);
+
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "auto" });
+    }
+  }, [messages.length]);
 
   return (
     <>
@@ -48,6 +55,7 @@ const Chat: React.FC = () => {
           {messages.map((message, index) => (
             <ChatMessage key={index} message={message} />
           ))}
+          <div ref={chatEndRef} />
         </List>
         <Divider />
         <ChatInput fetchMessages={fetchMessages} />

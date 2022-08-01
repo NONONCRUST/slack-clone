@@ -15,8 +15,6 @@ interface Props {
 
 const ChatMessage: React.FC<Props> = ({ message }) => {
   const currentUser = useSelector((state) => state.user);
-  console.log(currentUser);
-  console.log(message);
 
   const { username, timestamp } = message;
 

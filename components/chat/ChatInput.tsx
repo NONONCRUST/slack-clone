@@ -6,6 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { addChatAPI } from "../../lib/api/chat";
 import { useSelector } from "../../store";
 import { getParsedDate } from "../../lib/utils";
+import ImageModal from "../common/ImageModal";
 
 interface Props {
   fetchMessages: () => void;
@@ -14,6 +15,7 @@ interface Props {
 const ChatInput: React.FC<Props> = ({ fetchMessages }) => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
 
   const channel = useSelector((state) => state.channel.currentChannel);
   const user = useSelector((state) => state.user);
@@ -24,8 +26,18 @@ const ChatInput: React.FC<Props> = ({ fetchMessages }) => {
     []
   );
 
+  const onClickImageIcon = useCallback(() => {
+    setImageModalOpen(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setImageModalOpen(false);
+  }, []);
+
   const onEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.code === "Enter") submitMessage();
+    if (event.key === "Enter") {
+      submitMessage();
+    }
   };
 
   const submitMessage = useCallback(async () => {
@@ -60,7 +72,7 @@ const ChatInput: React.FC<Props> = ({ fetchMessages }) => {
                 <IconButton>
                   <InsertEmoticonIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={onClickImageIcon}>
                   <ImageIcon />
                 </IconButton>
               </InputAdornment>
@@ -80,6 +92,7 @@ const ChatInput: React.FC<Props> = ({ fetchMessages }) => {
           onChange={onChangeMessage}
           onKeyDown={onEnter}
         />
+        <ImageModal modalOpen={imageModalOpen} closeModal={closeModal} />
       </Grid>
     </Grid>
   );

@@ -10,6 +10,12 @@ export const getChatList = () => {
 
   const chatList = JSON.parse(chatsJSON);
 
+  return chatList;
+};
+
+export const getChatListWithUsername = () => {
+  const chatList = getChatList();
+
   const chatListWithUsername = chatList.map((chat: ChatAPIBodyType) => {
     const userList = getUserList();
 
@@ -17,7 +23,7 @@ export const getChatList = () => {
       (user: UserDataType) => user.email === chat.email
     );
 
-    const username = userInfo.name;
+    const username = userInfo?.name;
 
     return { username, ...chat };
   });
@@ -25,7 +31,7 @@ export const getChatList = () => {
   return chatListWithUsername;
 };
 
-export const addChat = (chat: any) => {
+export const addChat = (chat: ChatAPIBodyType) => {
   const chatList = getChatList();
   const newChatList = [...chatList, chat];
 
